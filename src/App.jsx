@@ -3,23 +3,20 @@ import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
 
 // Páginas
-import DashboardAdmin from "./pages/admin/DashboardAdmin";
 import DashboardManicura from "./pages/manicura/DashboardManicura";
 import Login from "./pages/Login";
 import Register from "./pages/admin/Register";
-import UserManagement from "./pages/admin/UserManagement";
+import DashboardAdmin from "./pages/admin/DashboardAdmin";
 import AppointmentForm from "./pages/manicura/AppointmentForm";
-import EditAppointment from "./pages/manicura/EditAppointment";
-
+import AppointmentEdit from "./pages/manicura/AppointmentEdit";
+import ServicesDashboard from "./pages/manicura/ServicesDashboard";
+import ClientsDashboard from "./pages/manicura/ClientsDashboard";
+import ClientForm from "./pages/manicura/ClientForm";
+import ServiceForm from "./pages/manicura/ServiceForm";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   const { user } = useContext(AuthContext);
-
-  // 🔒 Rutas protegidas: hay que estar logueado
-  const ProtectedRoute = ({ children }) => {
-    if (!user) return <Navigate to="/" replace />;
-    return children;
-  };
 
   // 🔒 Solo admin
   const AdminRoute = ({ children }) => {
@@ -37,81 +34,124 @@ const App = () => {
 
   return (
     <BrowserRouter>
-  <Routes>
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 3000,
+          style: {
+            background: "#1f2933",
+            color: "#e5e7eb",
+            border: "1px solid #374151",
+          },
+        }}
+      />
+      <Routes>
 
-    {/* Publica */}
-    <Route
-      path="/"
-      element={!user ? <Login /> : <Navigate to="/dashboard" replace />}
-    />
+        {/* Pública / Login */}
+        <Route
+          path="/"
+          element={
+            !user ? (
+              <Login />
+            ) : user.role === "admin" ? (
+              <Navigate to="/users" replace />
+            ) : (
+              <Navigate to="/dashboard" replace />
+            )
+          }
+        />
 
-    {/* Panel general */}
-    <Route
-      path="/dashboard"
-      element={
-        <ProtectedRoute>
-          {user && user.role === "admin" ? (
-            <DashboardAdmin />
-          ) : (
-            <DashboardManicura />
-          )}
-        </ProtectedRoute>
-      }
-    />
+        {/* ===================== */}
+        {/* DASHBOARD MANICURA */}
+        {/* ===================== */}
+        <Route
+          path="/dashboard"
+          element={
+            <ManicuraRoute>
+              <DashboardManicura />
+            </ManicuraRoute>
+          }
+        />
 
-    {/* Admin */}
-    <Route
-      path="/register"
-      element={
-        <AdminRoute>
-          <Register />
-        </AdminRoute>
-      }
-    />
+        <Route
+          path="/create-appointment"
+          element={
+            <ManicuraRoute>
+              <AppointmentForm />
+            </ManicuraRoute>
+          }
+        />
 
-    <Route
-      path="/users"
-      element={
-        <AdminRoute>
-          <UserManagement />
-        </AdminRoute>
-      }
-    />
+        <Route
+          path="/edit-appointment/:id"
+          element={
+            <ManicuraRoute>
+              <AppointmentEdit />
+            </ManicuraRoute>
+          }
+        />
 
-    {/* Manicura */}
-    <Route
-      path="/mis-turnos"
-      element={
-        <ManicuraRoute>
-          <DashboardManicura />
-        </ManicuraRoute>
-      }
-    />
+        <Route
+          path="/services"
+          element={
+            <ManicuraRoute>
+              <ServicesDashboard />
+            </ManicuraRoute>
+          }
+        />
+        <Route
+          path="/services/create"
+          element={
+            <ManicuraRoute>
+              <ServiceForm />
+            </ManicuraRoute>
+          }
+        />
 
-    <Route
-      path="/create-appointment"
-      element={
-        <ManicuraRoute>
-          <AppointmentForm />
-        </ManicuraRoute>
-      }
-    />
+        <Route
+          path="/clients"
+          element={
+            <ManicuraRoute>
+              <ClientsDashboard />
+            </ManicuraRoute>
+          }
+        />
 
-    <Route
-      path="/edit-appointment/:id"
-      element={
-        <ManicuraRoute>
-          <EditAppointment />
-        </ManicuraRoute>
-      }
-    />
+        <Route
+          path="/create-client"
+          element={
+            <ManicuraRoute>
+              <ClientForm />
+            </ManicuraRoute>
+          }
+        />
 
-    {/* Default */}
-    <Route path="*" element={<Navigate to="/" replace />} />
+        {/* ===================== */}
+        {/* ADMIN */}
+        {/* ===================== */}
+        <Route
+          path="/register"
+          element={
+            <AdminRoute>
+              <Register />
+            </AdminRoute>
+          }
+        />
 
-  </Routes>
-</BrowserRouter>
+        <Route
+          path="/users"
+          element={
+            <AdminRoute>
+              <DashboardAdmin />
+            </AdminRoute>
+          }
+        />
 
+        {/* Fallback */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+
+      </Routes>
+    </BrowserRouter>
   );
 };
 

@@ -3,7 +3,7 @@ import { AuthContext } from "../context/AuthContext";
 import { API_URL } from "../config/api";
 
 export default function Login() {
-  const { login } = useContext(AuthContext);
+  const { login } = useContext(AuthContext); 
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [error, setError] = useState(null);
 
@@ -23,7 +23,6 @@ export default function Login() {
       });
 
       const data = await res.json();
-      console.log(data);
 
       if (!res.ok) throw new Error(data.message || "Error al iniciar sesión");
 
@@ -35,6 +34,7 @@ export default function Login() {
   };
 
   return (
+    
     <div className="flex items-center justify-center min-h-screen bg-pink-50">
       <form
         onSubmit={handleSubmit}
@@ -79,5 +79,6 @@ export default function Login() {
 
       </form>
     </div>
+
   );
 }

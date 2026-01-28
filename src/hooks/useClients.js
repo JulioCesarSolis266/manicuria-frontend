@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
+
 export const useClients = () => {
   const { token } = useContext(AuthContext);
   const [clients, setClients] = useState([]);

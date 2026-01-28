@@ -8,76 +8,121 @@ export default function NavBarMain() {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="bg-gray-500 text-gray p-4 flex justify-between items-center relative">
-      {/* Logo */}
-      <h1 className="text-xl font-bold">Manicura Turnos</h1>
+    <nav className="bg-gray-900 border-b border-gray-800 sticky top-0 z-50">
+      <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+        {/* Logo */}
+        <h1 className="text-lg md:text-xl font-semibold text-white tracking-tight">
+          Manicura Turnos
+        </h1>
 
-      {/* Botón hamburguesa (solo móvil) */}
-      <button
-        className="md:hidden"
-        onClick={() => setOpen(!open)}
-      >
-        {open ? <X size={28} /> : <Menu size={28} />}
-      </button>
+        {/* Botón hamburguesa (solo móvil) */}
+        <button
+          className="md:hidden text-gray-200"
+          onClick={() => setOpen(!open)}
+          aria-label="Toggle menu"
+        >
+          {open ? <X size={26} /> : <Menu size={26} />}
+        </button>
 
-      {/* MENÚ */} 
-      <div
-        className={`
-          flex flex-col md:flex-row md:items-center gap-4
-          absolute md:static left-0 top-16 w-full md:w-auto
-          bg-gray-500 md:bg-transparent p-4 md:p-0
-          transition-all duration-300
-          ${open ? "flex" : "hidden md:flex"}
-        `}
-      >
-        {/* Usuario NO logueado */}
-        {!user && (
-          <>
-            <Link onClick={() => setOpen(false)} to="/" className="hover:underline">
-              Inicio
-            </Link>
-            <Link onClick={() => setOpen(false)} to="/" className="hover:underline">
-              Login
-            </Link>
-          </>
-        )}
+        {/* MENÚ */}
+        <div
+          className={`
+            flex flex-col md:flex-row md:items-center gap-4
+            absolute md:static left-0 top-full w-full md:w-auto
+            bg-gray-900 md:bg-transparent px-4 py-4 md:p-0
+            border-t border-gray-800 md:border-0
+            transition-all duration-200
+            ${open ? "flex" : "hidden md:flex"}
+          `}
+        >
+          {/* Usuario NO logueado */}
+          {!user && (
+            <>
+              <Link
+                onClick={() => setOpen(false)}
+                to="/"
+                className="text-gray-300 hover:text-white transition"
+              >
+                Inicio
+              </Link>
+              <Link
+                onClick={() => setOpen(false)}
+                to="/"
+                className="text-gray-300 hover:text-white transition"
+              >
+                Login
+              </Link>
+            </>
+          )}
 
-        {/* Usuario ADMIN */}
-        {user?.role === "admin" && (
-          <>
-            <Link onClick={() => setOpen(false)} to="/dashboard" className="hover:underline">
-              Dashboard Admin
-            </Link>
-            <Link onClick={() => setOpen(false)} to="/users" className="hover:underline">
-              Usuarios
-            </Link>
-            <Link onClick={() => setOpen(false)} to="/register" className="hover:underline">
-              Agregar Usuario
-            </Link>
-          </>
-        )}
+          {/* Usuario ADMIN: solo botón de cerrar sesión */}
+          {user?.role === "admin" && (
+            <button
+              onClick={() => {
+                logout();
+                setOpen(false);
+              }}
+              className="
+                mt-2 md:mt-0
+                bg-red-600 text-white
+                hover:bg-red-700
+                px-4 py-2 rounded-md
+                text-sm font-semibold
+                transition
+                border border-red-500
+              "
+            >
+              Cerrar sesión
+            </button>
+          )}
 
-        {/* Usuario MANICURA */}
-        {user?.role === "user" && (
-          <>
-            <Link onClick={() => setOpen(false)} to="/dashboard" className="hover:underline">
-              Mis Turnos
-            </Link>
-          </>
-        )}
+          {/* Usuario MANICURA */}
+          {user?.role === "user" && (
+            <>
+              <Link
+                onClick={() => setOpen(false)}
+                to="/mis-turnos"
+                className="text-gray-300 hover:text-white transition"
+              >
+                Mis Turnos
+              </Link>
 
-        {/* BOTÓN LOGOUT */}
-        {user && (
-          <button
-            onClick={() => {
-              logout();
-              setOpen(false);
-            }}
-            className="bg-gray-600 hover:bg-gray-700 px-3 py-1 rounded"
-          >
-            Cerrar sesión
-          </button>
-        )}
+              <Link
+                onClick={() => setOpen(false)}
+                to="/services"
+                className="text-gray-300 hover:text-white transition"
+              >
+                Servicios
+              </Link>
+
+              <Link
+                onClick={() => setOpen(false)}
+                to="/clients"
+                className="text-gray-300 hover:text-white transition"
+              >
+                Clientes
+              </Link>
+
+              {/* Logout para manicura (estilo neutro) */}
+              <button
+                onClick={() => {
+                  logout();
+                  setOpen(false);
+                }}
+                className="
+                  mt-2 md:mt-0
+                  bg-gray-700 text-white
+                  hover:bg-gray-600
+                  px-4 py-2 rounded-md
+                  text-sm font-medium
+                  transition
+                "
+              >
+                Cerrar sesión
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </nav>
   );
