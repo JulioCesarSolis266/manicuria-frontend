@@ -1,48 +1,55 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
 import NavBarMain from "../../components/NavBarMain";
+
 import { useClients } from "../../hooks/useClients";
+import { useServices } from "../../hooks/useServices";
+
+import { fetchWithAuth } from "../../services/fetchWithAuth";
+import { API_URL } from "../../config/api";
+import toast from "react-hot-toast";
 
 export default function AppointmentForm() {
   const navigate = useNavigate();
-  const { token } = useContext(AuthContext);
 
   const { clients, loadingClients, errorClients } = useClients();
+  const { services, loadingServices, errorServices } = useServices();
 
-  const [service, setService] = useState("");
+  const [serviceId, setServiceId] = useState("");
   const [date, setDate] = useState("");
   const [clientId, setClientId] = useState("");
+  const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
-  console.log("Clients loaded in form:", clients);
 
-  // 🔹 Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    const body = { service, date, clientId };
-
     try {
-      const res = await fetch("http://localhost:5000/api/appointments", {
+      const res = await fetchWithAuth(API_URL.APPOINTMENTS, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(body),
+        body: JSON.stringify({
+          serviceId,
+          date,
+          clientId,
+          description,
+        }),
       });
+
+      if (!res) return;
 
       const data = await res.json();
 
-      if (res.ok) {
-        alert("Appointment created successfully");
-        navigate("/dashboard-manicura");
-      } else {
-        alert("Error: " + data.message);
+      if (!res.ok) {
+        toast.error(data.message || "Error al crear el turno");
+        return;
       }
-    } catch (err) {
-      console.error("Error creating appointment:", err);
+
+      toast.success("Turno creado correctamente");
+      navigate("/dashboard-manicura");
+    } catch (error) {
+      console.error("Error creating appointment:", error);
+      toast.error("Error de red al crear el turno");
     } finally {
       setLoading(false);
     }
@@ -51,82 +58,115 @@ export default function AppointmentForm() {
   return (
     <>
       <NavBarMain />
-      <div style={{ padding: "20px" }}>
-        <h1>Create Appointment</h1>
+      <div className="min-h-[calc(100vh-64px)] flex items-center justify-center bg-gray-100 px-4">
+        <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-6">
+          <h1 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
+            Crear Turno
+          </h1>
 
-        <form
-          onSubmit={handleSubmit}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "15px",
-            maxWidth: "400px",
-          }}
-        >
-          {/* Service */}
-          <div>
-            <label>Service</label>
-            <input
-              type="text"
-              required
-              value={service}
-              onChange={(e) => setService(e.target.value)}
-              placeholder="Detalle del servicio"
-              style={{ width: "100%", padding: "8px" }}
-            />
-          </div>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            {/* Servicio */}
+            <div className="flex flex-col gap-1">
+              <label className="text-sm font-medium text-red-600">
+                Servicio *
+              </label>
 
-          {/* Date */}
-          <div>
-            <label>Date & Time</label>
-            <input
-              type="datetime-local"
-              required
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              style={{ width: "100%", padding: "8px" }}
-            />
-          </div>
+              {loadingServices && (
+                <p className="text-sm text-gray-500">Cargando servicios...</p>
+              )}
 
-          {/* Client */}
-          <div>
-            <label>Client</label>
+              {errorServices && (
+                <p className="text-sm text-red-500">{errorServices}</p>
+              )}
 
-            {loadingClients && <p>Loading clients...</p>}
-            {errorClients && <p style={{ color: "red" }}>Error: {errorClients}</p>}
+              {!loadingServices && !errorServices && (
+                <select
+                  required
+                  value={serviceId}
+                  onChange={(e) => setServiceId(e.target.value)}
+                  className="w-full border rounded-md px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                >
+                  <option value="">Selecciona un servicio</option>
+                  {services.map((service) => (
+                    <option key={service.id} value={service.id}>
+                      {service.name}
+                    </option>
+                  ))}
+                </select>
+              )}
+            </div>
 
-            {!loadingClients && !errorClients && (
-              <select
+            {/* Fecha */}
+            <div className="flex flex-col gap-1">
+              <label className="text-sm font-medium text-red-600">
+                Fecha y Hora *
+              </label>
+              <input
+                type="datetime-local"
                 required
-                value={clientId}
-                onChange={(e) => setClientId(e.target.value)}
-                style={{ width: "100%", padding: "8px" }}
-              >
-                <option value="">Select a client</option>
-                {clients.map((client) => (
-                  <option key={client.id} value={client.id}>
-                    {client.name}
-                  </option>
-                ))}
-              </select>
-            )}
-          </div>
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                className="w-full border rounded-md px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+            </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            style={{
-              padding: "10px",
-              background: "#4CAF50",
-              color: "white",
-              border: "none",
-              borderRadius: "6px",
-              cursor: "pointer",
-            }}
-          >
-            {loading ? "Saving..." : "Create Appointment"}
-          </button>
-        </form>
+            {/* Cliente */}
+            <div className="flex flex-col gap-1">
+              <label className="text-sm font-medium text-red-600">
+                Cliente *
+              </label>
+
+              {loadingClients && (
+                <p className="text-sm text-gray-500">Cargando clientes...</p>
+              )}
+
+              {errorClients && (
+                <p className="text-sm text-red-500">{errorClients}</p>
+              )}
+
+              {!loadingClients && !errorClients && (
+                <select
+                  required
+                  value={clientId}
+                  onChange={(e) => setClientId(e.target.value)}
+                  className="w-full border rounded-md px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                >
+                  <option value="">Selecciona un cliente</option>
+                  {clients.map((client) => (
+                    <option key={client.id} value={client.id}>
+                      {client.name + " " + client.surname}
+                    </option>
+                  ))}
+                </select>
+              )}
+            </div>
+
+            {/* Descripción */}
+            <div className="flex flex-col gap-1">
+              <label className="text-sm font-medium text-gray-700">
+                Descripción
+              </label>
+              <textarea
+                rows={3}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className="w-full border rounded-md px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className={`mt-2 w-full py-2 rounded-md font-medium text-white transition ${
+                loading
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-green-600 hover:bg-green-700"
+              }`}
+            >
+              {loading ? "Guardando..." : "Crear Turno"}
+            </button>
+          </form>
+        </div>
       </div>
     </>
   );
