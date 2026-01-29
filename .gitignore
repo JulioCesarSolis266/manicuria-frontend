@@ -10,7 +10,7 @@ dist-ssr/
 .env.*
 !.env.example
 
-# Logs
+# Logs"
 *.log
 logs/
 npm-debug.log*

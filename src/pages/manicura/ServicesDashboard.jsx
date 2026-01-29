@@ -62,14 +62,19 @@ export default function ServicesDashboard() {
 
     // Validaciones simples
     if (!form.name.trim()) newErrors.name = "El nombre es obligatorio.";
-    if (!form.price || isNaN(form.price)) newErrors.price = "El precio debe ser un número.";
-    if (!form.durationMinutes || isNaN(form.durationMinutes)) newErrors.durationMinutes = "La duración debe ser un número.";
+    if (!form.price || isNaN(form.price))
+      newErrors.price = "El precio debe ser un número.";
+    if (!form.durationMinutes || isNaN(form.durationMinutes))
+      newErrors.durationMinutes = "La duración debe ser un número.";
+    if (!form.durationMinutes || Number(form.durationMinutes) < 15)
+      newErrors.durationMinutes = "Mínimo 15 minutos";
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
 
+    // Actualizar servicio
     try {
       const res = await fetchWithAuth(`${API_URL.SERVICES}/${id}`, {
         method: "PUT",
@@ -114,6 +119,16 @@ export default function ServicesDashboard() {
       toast.error("Error inesperado al eliminar servicio");
     }
   };
+
+  //formatear precio
+  const formatPrice = (price) => {
+    return Number(price).toLocaleString("es-AR",
+      { style: "currency",
+        currency: "ARS",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      });
+  }
 
   return (
     <>
@@ -160,7 +175,9 @@ export default function ServicesDashboard() {
                           }`}
                         />
                         {errors[field] && (
-                          <p className="text-red-600 text-sm">{errors[field]}</p>
+                          <p className="text-red-600 text-sm">
+                            {errors[field]}
+                          </p>
                         )}
                       </div>
                     ))}
@@ -182,11 +199,21 @@ export default function ServicesDashboard() {
                   </>
                 ) : (
                   <>
-                    <p><b>Servicio:</b> {s.name}</p>
-                    <p><b>Precio:</b> ${s.price}</p>
-                    <p><b>Duración:</b> {s.durationMinutes} min</p>
-                    <p><b>Categoría:</b> {s.category || "Sin especificar"}</p>
-                    <p><b>Descripción:</b> {s.description || "Sin especificar"}</p>
+                    <p>
+                      <b>Servicio:</b> {s.name}
+                    </p>
+                    <p>
+                      <b>Precio:</b> {formatPrice(s.price)}
+                    </p>
+                    <p>
+                      <b>Duración (min):</b> {s.durationMinutes} min
+                    </p>
+                    <p>
+                      <b>Categoría:</b> {s.category || "Sin especificar"}
+                    </p>
+                    <p>
+                      <b>Descripción:</b> {s.description || "Sin especificar"}
+                    </p>
 
                     <div className="flex gap-2 mt-3">
                       <button
@@ -215,10 +242,23 @@ export default function ServicesDashboard() {
             <table className="w-full border border-gray-300 border-collapse">
               <thead className="bg-gray-100">
                 <tr>
-                  {["Servicio","Precio","Duración","Categoría","Descripción"].map((title) => (
-                    <th key={title} className="border-b border-gray-300 p-2 text-left">{title}</th>
+                  {[
+                    "Servicio",
+                    "Precio",
+                    "Duración (min)",
+                    "Categoría",
+                    "Descripción",
+                  ].map((title) => (
+                    <th
+                      key={title}
+                      className="border-b border-gray-300 p-2 text-left"
+                    >
+                      {title}
+                    </th>
                   ))}
-                  <th className="border-b border-gray-300 p-2 text-center">Acciones</th>
+                  <th className="border-b border-gray-300 p-2 text-center">
+                    Acciones
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -226,19 +266,32 @@ export default function ServicesDashboard() {
                   <tr key={s.id} className="hover:bg-gray-50">
                     {editingId === s.id ? (
                       <>
-                        {["name","price","durationMinutes","category","description"].map((field) => (
-                          <td key={field} className="border-b border-gray-300 p-2">
+                        {[
+                          "name",
+                          "price",
+                          "durationMinutes",
+                          "category",
+                          "description",
+                        ].map((field) => (
+                          <td
+                            key={field}
+                            className="border-b border-gray-300 p-2"
+                          >
                             <input
                               value={form[field]}
                               onChange={(e) =>
                                 setForm({ ...form, [field]: e.target.value })
                               }
                               className={`w-full border px-2 py-1 rounded ${
-                                errors[field] ? "border-red-500" : "border-gray-300"
+                                errors[field]
+                                  ? "border-red-500"
+                                  : "border-gray-300"
                               }`}
                             />
                             {errors[field] && (
-                              <p className="text-red-600 text-sm">{errors[field]}</p>
+                              <p className="text-red-600 text-sm">
+                                {errors[field]}
+                              </p>
                             )}
                           </td>
                         ))}
@@ -261,11 +314,21 @@ export default function ServicesDashboard() {
                       </>
                     ) : (
                       <>
-                        <td className="border-b border-gray-300 p-2">{s.name}</td>
-                        <td className="border-b border-gray-300 p-2">${s.price}</td>
-                        <td className="border-b border-gray-300 p-2">{s.durationMinutes} min</td>
-                        <td className="border-b border-gray-300 p-2">{s.category || "Sin especificar"}</td>
-                        <td className="border-b border-gray-300 p-2">{s.description || "Sin especificar"}</td>
+                        <td className="border-b border-gray-300 p-2">
+                          {s.name}
+                        </td>
+                        <td className="border-b border-gray-300 p-2">
+                          {formatPrice(s.price)}
+                        </td>
+                        <td className="border-b border-gray-300 p-2">
+                          {s.durationMinutes} min
+                        </td>
+                        <td className="border-b border-gray-300 p-2">
+                          {s.category || "Sin especificar"}
+                        </td>
+                        <td className="border-b border-gray-300 p-2">
+                          {s.description || "Sin especificar"}
+                        </td>
                         <td className="border-b border-gray-300 p-2 text-center">
                           <div className="flex gap-2 justify-center">
                             <button

@@ -84,14 +84,14 @@ export default function ClientsDashboard() {
     }
 
     // ===== TELÉFONO =====
-    if (!form.phone) {
+    const phone = form.phone?.trim();
+
+    if (!phone) {
       newErrors.phone = "El teléfono es obligatorio.";
-    } else if (!/^\d+$/.test(form.phone)) {
+    } else if (!/^\d+$/.test(phone)) {
       newErrors.phone = "El teléfono debe contener solo números.";
-    } else if (form.phone.length < 8) {
-      newErrors.phone = "El teléfono debe tener al menos 8 dígitos.";
-    } else if (form.phone.length > 15) {
-      newErrors.phone = "El teléfono no puede superar los 15 dígitos.";
+    } else if (phone.length < 7 || phone.length > 15) {
+      newErrors.phone = "El teléfono debe tener entre 7 y 15 dígitos.";
     }
 
     setErrors(newErrors);
@@ -159,6 +159,12 @@ export default function ClientsDashboard() {
       console.error("Error eliminando cliente:", error);
       toast.error("Error inesperado al eliminar cliente");
     }
+  };
+
+  //formato telefono
+  const formatPhone = (phone) => {
+    if (!phone) return "";
+    return phone.replace(/(\d{2,3})(\d{2,3})(\d{2,3})/, "$1 $2 $3");
   };
 
   // =========================
@@ -300,7 +306,8 @@ export default function ClientsDashboard() {
                   <>
                     <p className="font-semibold">{c.name + " " + c.surname}</p>
                     <p className="text-sm text-gray-700">
-                      <span className="font-medium">Tel:</span> {c.phone || "-"}
+                      <span className="font-medium">Tel:</span>{" "}
+                      {formatPhone(c.phone) || "-"}
                     </p>
                     {c.notes && (
                       <p className="text-sm text-gray-600">
@@ -466,7 +473,7 @@ export default function ClientsDashboard() {
 
                         {/* Teléfono */}
                         <td className="p-2 border-b border-gray-300">
-                          {c.phone || "-"}
+                          {formatPhone(c.phone) || "-"}
                         </td>
 
                         {/* Notas */}
