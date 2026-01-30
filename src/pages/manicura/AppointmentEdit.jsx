@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { useServices } from "../../hooks/useServices";
+import { API_URL } from "../../config/api";
 import NavBarMain from "../../components/NavBarMain";
 import Footer from "../../components/Footer";
 import toast from "react-hot-toast";
@@ -32,7 +33,7 @@ export default function AppointmentEdit() {
     const fetchAppointment = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/appointments/${id}`,
+          `${API_URL.APPOINTMENTS}/${id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -65,7 +66,7 @@ export default function AppointmentEdit() {
 
   const handleUpdate = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/appointments/${id}`, {
+      const res = await fetch(`${API_URL.APPOINTMENTS}/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

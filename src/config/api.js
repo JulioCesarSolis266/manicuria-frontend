@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5000/api";
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 export const API_URL = {
   AUTH: `${BASE_URL}/auth`,
@@ -7,4 +7,3 @@ export const API_URL = {
   CLIENTS: `${BASE_URL}/clients`,
   SERVICES: `${BASE_URL}/services`,
 };
-

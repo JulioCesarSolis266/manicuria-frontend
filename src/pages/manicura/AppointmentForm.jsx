@@ -21,39 +21,46 @@ export default function AppointmentForm() {
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+
+  try {
+    const res = await fetchWithAuth(API_URL.APPOINTMENTS, {
+      method: "POST",
+      body: JSON.stringify({
+        serviceId,
+        date,
+        clientId,
+        description,
+      }),
+    });
+
+    if (!res) return;
+
+    let data = null;
 
     try {
-      const res = await fetchWithAuth(API_URL.APPOINTMENTS, {
-        method: "POST",
-        body: JSON.stringify({
-          serviceId,
-          date,
-          clientId,
-          description,
-        }),
-      });
-
-      if (!res) return;
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        toast.error(data.message || "Error al crear el turno");
-        return;
-      }
-
-      toast.success("Turno creado correctamente");
-      navigate("/dashboard-manicura");
-    } catch (error) {
-      console.error("Error creating appointment:", error);
-      toast.error("Error de red al crear el turno");
-    } finally {
-      setLoading(false);
+      data = await res.json();//Esto sirve para capturar errores que no son de red
+    } catch {
+      throw new Error("Respuesta inválida del servidor");
     }
-  };
+
+    if (!res.ok) {
+      throw new Error(data.error || data.message || "Error al crear turno");
+    }
+
+    toast.success("Turno creado correctamente");
+    navigate("/dashboard-manicura");
+
+  } catch (error) {
+    console.error("Error creating appointment:", error);
+    toast.error(error.message || "Error de red al crear el turno");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <>
