@@ -30,7 +30,7 @@ const handleSubmit = async (e) => {
       method: "POST",
       body: JSON.stringify({
         serviceId,
-        date,
+        date: new Date(date).toISOString(),
         clientId,
         description,
       }),
