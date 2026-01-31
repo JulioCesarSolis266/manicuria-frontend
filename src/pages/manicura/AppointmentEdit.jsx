@@ -74,7 +74,7 @@ export default function AppointmentEdit() {
         },
         body: JSON.stringify({
           serviceId,
-          date,
+          date: new Date(date).toISOString(),
           status,
           description,
         }),
