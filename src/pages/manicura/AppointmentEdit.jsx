@@ -32,12 +32,9 @@ export default function AppointmentEdit() {
   useEffect(() => {
     const fetchAppointment = async () => {
       try {
-        const res = await fetch(
-          `${API_URL.APPOINTMENTS}/${id}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const res = await fetch(`${API_URL.APPOINTMENTS}/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         if (!res.ok) {
           toast.error("Error obteniendo turno");
@@ -66,18 +63,27 @@ export default function AppointmentEdit() {
 
   const handleUpdate = async () => {
     try {
+      const body = {
+        serviceId,
+        status,
+        description,
+      };
+
+      // 🧠 Solo mandar fecha si cambió
+      const originalDateISO = new Date(appointment.date).toISOString();
+      const editedDateISO = new Date(date).toISOString();
+
+      if (originalDateISO !== editedDateISO) {
+        body.date = editedDateISO;
+      }
+
       const res = await fetch(`${API_URL.APPOINTMENTS}/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          serviceId,
-          date: new Date(date).toISOString(),
-          status,
-          description,
-        }),
+        body: JSON.stringify(body),
       });
 
       const data = await res.json();
