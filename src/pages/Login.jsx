@@ -36,6 +36,11 @@ export default function Login() {
   return (
     
     <div className="flex items-center justify-center min-h-screen bg-pink-50">
+
+      <h1>Gestor de Turnos </h1>
+
+      
+
       <form
         onSubmit={handleSubmit}
         className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md"
