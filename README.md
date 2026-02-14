@@ -105,3 +105,5 @@ Mejor organización de responsabilidades
 Optimización de estilos Tailwind
 
 Mejora en experiencia de usuario
+
+Repositorio del backend <https://github.com/JulioCesarSolis266/manicuria-backend>
