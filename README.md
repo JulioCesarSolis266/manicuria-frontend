@@ -4,19 +4,28 @@ Appointment Management System — Web Client
 
 Frontend application developed with React to consume the REST API of the appointment management system.
 
+🌐 Live Demo
+https://nagatosoft-turnos.vercel.app/
+
+📖 Project Overview
+
+This application is the frontend client of an appointment management system designed for small service businesses.
+It allows administrators to manage users, clients, services, and appointments through a secure interface with role-based access.
+
 🛠️ Tech Stack
 
 React
-
 Vite
-
 Tailwind CSS
-
 React Router
 
+State Management
+React Context API
+
+API Communication
 Fetch API
 
-🏗️ Arquitecture
+🏗️ Architecture
 
 Simplified structure:
 
@@ -27,8 +36,8 @@ src/
 │── config/         # Configuration (API URL, constants)
 │── context/        # Context API (global state, auth)
 │── hooks/          # Custom hooks
-│── pages/          # Main viewa
-│── services/       # API comunication
+│── pages/          # Main views
+│── services/       # API communication
 │── App.jsx         # Route definitions
 │── index.css       # Global styles
 └── main.jsx        # Entry point
@@ -49,11 +58,19 @@ Private route protection
 
 Full CRUD for:
 
+Users
+
 Clients
 
 Services
 
 Appointments
+
+Role-based system:
+
+Admin: manages users.
+
+User: manages clients, services and appointments
 
 Responsive interface
 
