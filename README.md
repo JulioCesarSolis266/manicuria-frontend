@@ -20,37 +20,20 @@ Fetch API
 
 Estructura simplificada:
 
-frontend/
-
-├── .env                # Variables de entorno (no versionado)
-
-├── index.html          # Template base de Vite
-
-├── package.json
-
-├── src/
-
-│   ├── assets/         # Recursos estáticos
-
-│   ├── components/     # Componentes reutilizables
-
-│   ├── config/         # Configuración (API URL, constantes)
-
-│   ├── context/        # Context API (estado global, auth)
-
-│   ├── hooks/          # Custom hooks
-
-│   ├── pages/          # Vistas principales
-
-│   ├── services/       # Comunicación con la API
-
-│   ├── App.jsx         # Definición de rutas
-
-│   ├── index.css       # Estilos globales
-
-│   └── main.jsx        # Punto de entrada
-
-
+```
+src/
+|── assets/         # Recursos estáticos
+│── components/     # Componentes reutilizables
+│── config/         # Configuración (API URL, constantes)
+│── context/        # Context API (estado global, auth)
+│── hooks/          # Custom hooks
+│── pages/          # Vistas principales
+│── services/       # Comunicación con la API
+│── App.jsx         # Definición de rutas
+│── index.css       # Estilos globales
+└── main.jsx        # Punto de entrada
+index.html          # Template base de Vite
+```
 
 🔐 Autenticación
 
