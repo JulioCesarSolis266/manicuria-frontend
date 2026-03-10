@@ -1,10 +1,10 @@
 📘 README — Frontend
 
-Sistema de Gestión de Turnos — Cliente Web
+Appointment Management System — Web Client
 
-Aplicación frontend desarrollada en React para consumir la API REST del sistema de gestión de turnos.
+Frontend application developed with React to consume the REST API of the appointment management system.
 
-🛠️ Stack Tecnológico
+🛠️ Tech Stack
 
 React
 
@@ -16,58 +16,58 @@ React Router
 
 Fetch API
 
-🏗️ Arquitectura
+🏗️ Arquitecture
 
-Estructura simplificada:
+Simplified structure:
 
 ```
 src/
-|── assets/         # Recursos estáticos
-│── components/     # Componentes reutilizables
-│── config/         # Configuración (API URL, constantes)
-│── context/        # Context API (estado global, auth)
+|── assets/         # Static assets
+│── components/     # Reusable components
+│── config/         # Configuration (API URL, constants)
+│── context/        # Context API (global state, auth)
 │── hooks/          # Custom hooks
-│── pages/          # Vistas principales
-│── services/       # Comunicación con la API
-│── App.jsx         # Definición de rutas
-│── index.css       # Estilos globales
-└── main.jsx        # Punto de entrada
-index.html          # Template base de Vite
+│── pages/          # Main viewa
+│── services/       # API comunication
+│── App.jsx         # Route definitions
+│── index.css       # Global styles
+└── main.jsx        # Entry point
+index.html          # Vite base template
 ```
 
-🔐 Autenticación
+🔐 Authentication
 
-Login mediante credenciales
+Login using credentials
 
-Recepción de JWT desde backend
+Receiving JWT from the backend
 
-Persistencia de sesión
+Session persistence
 
-Protección de rutas privadas
+Private route protection
 
-📦 Funcionalidades
+📦 Features
 
-CRUD completo de:
+Full CRUD for:
 
-Clientes
+Clients
 
-Servicios
+Services
 
-Turnos
+Appointments
 
-Interfaz responsive
+Responsive interface
 
-Formularios con validaciones
+Forms with validations
 
-Manejo de estados y navegación protegida
+State management and protected navigation
 
-🌐 Variables de Entorno
+🌐 Environment Variables
 
 VITE_API_URL=
 
-⚙️ Instalación Local
+⚙️ Local Installation
 
-git clone <https://github.com/JulioCesarSolis266/manicuria-frontend>
+git clone https://github.com/JulioCesarSolis266/manicuria-frontend
 
 cd frontend
 
@@ -79,14 +79,15 @@ npm run dev
 
 Vercel
 
-🔮 Mejoras Futuras
+🔮 Future Improvements
 
-Refactor a TypeScript
+Refactor to TypeScript
 
-Mejor organización de responsabilidades
+Better organization of responsibilities
 
-Optimización de estilos Tailwind
+Tailwind styles optimization
 
-Mejora en experiencia de usuario
+Improved user experience
 
-Repositorio del backend <https://github.com/JulioCesarSolis266/manicuria-backend>
+Backend repository:
+https://github.com/JulioCesarSolis266/manicuria-backend
