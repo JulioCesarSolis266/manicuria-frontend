@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import NavBarMain from "../../components/NavBarMain";
+import NavBarMain from "../../../components/layout/NavBarMain";
 
-import { useClients } from "../../hooks/useClients";
-import { useServices } from "../../hooks/useServices";
+import { useClients } from "../clients/useClients";
+import { useServices } from "../services/useServices";
 
-import { fetchWithAuth } from "../../services/fetchWithAuth";
-import { API_URL } from "../../config/api";
+import { fetchWithAuth } from "../../../api/fetchWithAuth";
+import { API_URL } from "../../../config/api";
 import toast from "react-hot-toast";
 
 export default function AppointmentForm() {
@@ -21,46 +21,44 @@ export default function AppointmentForm() {
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
-
-  try {
-    const res = await fetchWithAuth(API_URL.APPOINTMENTS, {
-      method: "POST",
-      body: JSON.stringify({
-        serviceId,
-        date: new Date(date).toISOString(),
-        clientId,
-        description,
-      }),
-    });
-
-    if (!res) return;
-
-    let data = null;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
     try {
-      data = await res.json();//Esto sirve para capturar errores que no son de red
-    } catch {
-      throw new Error("Respuesta inválida del servidor");
+      const res = await fetchWithAuth(API_URL.APPOINTMENTS, {
+        method: "POST",
+        body: JSON.stringify({
+          serviceId,
+          date: new Date(date).toISOString(),
+          clientId,
+          description,
+        }),
+      });
+
+      if (!res) return;
+
+      let data = null;
+
+      try {
+        data = await res.json(); //Esto sirve para capturar errores que no son de red
+      } catch {
+        throw new Error("Respuesta inválida del servidor");
+      }
+
+      if (!res.ok) {
+        throw new Error(data.error || data.message || "Error al crear turno");
+      }
+
+      toast.success("Turno creado correctamente");
+      navigate("/dashboard-manicura");
+    } catch (error) {
+      console.error("Error creating appointment:", error);
+      toast.error(error.message || "Error de red al crear el turno");
+    } finally {
+      setLoading(false);
     }
-
-    if (!res.ok) {
-      throw new Error(data.error || data.message || "Error al crear turno");
-    }
-
-    toast.success("Turno creado correctamente");
-    navigate("/dashboard-manicura");
-
-  } catch (error) {
-    console.error("Error creating appointment:", error);
-    toast.error(error.message || "Error de red al crear el turno");
-  } finally {
-    setLoading(false);
-  }
-};
-
+  };
 
   return (
     <>

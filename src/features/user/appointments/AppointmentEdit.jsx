@@ -1,10 +1,10 @@
 import { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
-import { useServices } from "../../hooks/useServices";
-import { API_URL } from "../../config/api";
-import NavBarMain from "../../components/NavBarMain";
-import Footer from "../../components/Footer";
+import { AuthContext } from "../../../features/auth/context/AuthContext";
+import { useServices } from "../services/useServices";
+import { API_URL } from "../../../config/api";
+import NavBarMain from "../../../components/layout/NavBarMain";
+import Footer from "../../../components/layout/Footer";
 import toast from "react-hot-toast";
 
 export default function AppointmentEdit() {

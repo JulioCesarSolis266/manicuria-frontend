@@ -1,4 +1,4 @@
-import toast from "react-hot-toast";
+import toast from "react-hot-toast"; // ✅ Toast for notifications
 
 export const fetchWithAuth = async (url, options = {}) => {
   const token = localStorage.getItem("token");

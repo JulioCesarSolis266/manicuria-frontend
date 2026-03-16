@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import NavBarMain from "../../components/NavBarMain";
-import { fetchWithAuth } from "../../services/fetchWithAuth";
-import { API_URL } from "../../config/api";
+import NavBarMain from "../../../components/layout/NavBarMain";
+import { fetchWithAuth } from "../../../api/fetchWithAuth";
+import { API_URL } from "../../../config/api";
 
 export default function ClientForm() {
   const navigate = useNavigate();
@@ -19,36 +19,35 @@ export default function ClientForm() {
   const [loading, setLoading] = useState(false);
 
   const validate = () => {
-  const newErrors = {};
+    const newErrors = {};
 
-  const minLength = (value, min) => value.trim().length >= min;
+    const minLength = (value, min) => value.trim().length >= min;
 
-  // Nombre
-  if (!form.name.trim()) {
-    newErrors.name = "El nombre es obligatorio.";
-  } else if (!minLength(form.name, 3)) {
-    newErrors.name = "El nombre debe tener al menos 3 letras.";
-  }
+    // Nombre
+    if (!form.name.trim()) {
+      newErrors.name = "El nombre es obligatorio.";
+    } else if (!minLength(form.name, 3)) {
+      newErrors.name = "El nombre debe tener al menos 3 letras.";
+    }
 
-  // Apellido
-  if (!form.surname.trim()) {
-    newErrors.surname = "El apellido es obligatorio.";
-  } else if (!minLength(form.surname, 3)) {
-    newErrors.surname = "El apellido debe tener al menos 3 letras.";
-  }
+    // Apellido
+    if (!form.surname.trim()) {
+      newErrors.surname = "El apellido es obligatorio.";
+    } else if (!minLength(form.surname, 3)) {
+      newErrors.surname = "El apellido debe tener al menos 3 letras.";
+    }
 
-  // Teléfono
-  if (!form.phone) {
-    newErrors.phone = "El teléfono es obligatorio.";
-  } else if (!/^\d{7,15}$/.test(form.phone)) {
-    newErrors.phone = "El teléfono debe tener entre 7 y 15 dígitos numéricos.";
-  }
+    // Teléfono
+    if (!form.phone) {
+      newErrors.phone = "El teléfono es obligatorio.";
+    } else if (!/^\d{7,15}$/.test(form.phone)) {
+      newErrors.phone =
+        "El teléfono debe tener entre 7 y 15 dígitos numéricos.";
+    }
 
-  setErrors(newErrors);
-  return Object.keys(newErrors).length === 0;
-};
-
-
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   // Cambios en los campos del formulario
   const handleChange = (e) => {

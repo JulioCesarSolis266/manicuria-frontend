@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../features/auth/context/AuthContext";
 import { Menu, X } from "lucide-react";
 
 export default function NavBarMain() {
@@ -12,7 +12,7 @@ export default function NavBarMain() {
       <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
         {/* Logo */}
         <h1 className="text-lg md:text-xl font-semibold text-white tracking-tight">
-          Manicura Turnos
+          Nagato Software
         </h1>
 
         {/* Botón hamburguesa (solo móvil) */}

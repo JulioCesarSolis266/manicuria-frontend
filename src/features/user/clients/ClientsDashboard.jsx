@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { API_URL } from "../../config/api";
-import { fetchWithAuth } from "../../services/fetchWithAuth";
-import NavBarMain from "../../components/NavBarMain";
+import { API_URL } from "../../../config/api";
+import { fetchWithAuth } from "../../../api/fetchWithAuth";
+import NavBarMain from "../../../components/layout/NavBarMain";
 
 export default function ClientsDashboard() {
   const navigate = useNavigate();

@@ -1,36 +1,23 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "./context/AuthContext";
+import { AuthContext } from "./features/auth/context/AuthContext";
+import ProtectedRoute from "./components/routing/ProtectedRoute";
 
 // Páginas
-import DashboardManicura from "./pages/manicura/DashboardManicura";
-import Login from "./pages/Login";
-import Register from "./pages/admin/Register";
-import DashboardAdmin from "./pages/admin/DashboardAdmin";
-import AppointmentForm from "./pages/manicura/AppointmentForm";
-import AppointmentEdit from "./pages/manicura/AppointmentEdit";
-import ServicesDashboard from "./pages/manicura/ServicesDashboard";
-import ClientsDashboard from "./pages/manicura/ClientsDashboard";
-import ClientForm from "./pages/manicura/ClientForm";
-import ServiceForm from "./pages/manicura/ServiceForm";
+import DashboardUser from "./features/user/dashboard/DashboardUser";
+import Login from "./features/auth/Login";
+import Register from "./features/admin/Register";
+import DashboardAdmin from "./features/admin/page/DashboardAdmin";
+import AppointmentForm from "./features/user/appointments/AppointmentForm";
+import AppointmentEdit from "./features/user/appointments/AppointmentEdit";
+import ServicesDashboard from "./features/user/services/ServicesDashboard";
+import ClientsDashboard from "./features/user/clients/ClientsDashboard";
+import ClientForm from "./features/user/clients/ClientForm";
+import ServiceForm from "./features/user/services/ServiceForm";
 import { Toaster } from "react-hot-toast";
 
 const App = () => {
   const { user } = useContext(AuthContext);
-
-  // 🔒 Solo admin
-  const AdminRoute = ({ children }) => {
-    if (!user) return <Navigate to="/" replace />;
-    if (user.role !== "admin") return <Navigate to="/dashboard" replace />;
-    return children;
-  };
-
-  // 🔒 Solo manicura (rol "user")
-  const ManicuraRoute = ({ children }) => {
-    if (!user) return <Navigate to="/" replace />;
-    if (user.role !== "user") return <Navigate to="/dashboard" replace />;
-    return children;
-  };
 
   return (
     <BrowserRouter>
@@ -46,7 +33,6 @@ const App = () => {
         }}
       />
       <Routes>
-
         {/* Pública / Login */}
         <Route
           path="/"
@@ -62,67 +48,67 @@ const App = () => {
         />
 
         {/* ===================== */}
-        {/* DASHBOARD MANICURA */}
+        {/* DASHBOARD User */}
         {/* ===================== */}
         <Route
           path="/dashboard"
           element={
-            <ManicuraRoute>
-              <DashboardManicura />
-            </ManicuraRoute>
+            <ProtectedRoute role="user">
+              <DashboardUser />
+            </ProtectedRoute>
           }
         />
 
         <Route
           path="/create-appointment"
           element={
-            <ManicuraRoute>
+            <ProtectedRoute role="user">
               <AppointmentForm />
-            </ManicuraRoute>
+            </ProtectedRoute>
           }
         />
 
         <Route
           path="/edit-appointment/:id"
           element={
-            <ManicuraRoute>
+            <ProtectedRoute role="user">
               <AppointmentEdit />
-            </ManicuraRoute>
+            </ProtectedRoute>
           }
         />
 
         <Route
           path="/services"
           element={
-            <ManicuraRoute>
+            <ProtectedRoute role="user">
               <ServicesDashboard />
-            </ManicuraRoute>
+            </ProtectedRoute>
           }
         />
         <Route
           path="/services/create"
           element={
-            <ManicuraRoute>
+            <ProtectedRoute role="user">
               <ServiceForm />
-            </ManicuraRoute>
+            </ProtectedRoute>
           }
         />
 
         <Route
           path="/clients"
           element={
-            <ManicuraRoute>
+            <ProtectedRoute role="user">
               <ClientsDashboard />
-            </ManicuraRoute>
+            </ProtectedRoute>
           }
         />
 
         <Route
           path="/create-client"
           element={
-            <ManicuraRoute>
+            <ProtectedRoute role="user">
               <ClientForm />
-            </ManicuraRoute>
+            </ProtectedRoute>
           }
         />
 
@@ -132,24 +118,23 @@ const App = () => {
         <Route
           path="/register"
           element={
-            <AdminRoute>
+            <ProtectedRoute role="admin">
               <Register />
-            </AdminRoute>
+            </ProtectedRoute>
           }
         />
 
         <Route
           path="/users"
           element={
-            <AdminRoute>
+            <ProtectedRoute role="admin">
               <DashboardAdmin />
-            </AdminRoute>
+            </ProtectedRoute>
           }
         />
 
-        {/* Fallback */}
+        {/* Fallback para redirigir a la página de inicio si la ruta no existe */}
         <Route path="*" element={<Navigate to="/" replace />} />
-
       </Routes>
     </BrowserRouter>
   );

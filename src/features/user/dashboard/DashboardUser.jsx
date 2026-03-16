@@ -1,13 +1,13 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
-import NavBarMain from "../../components/NavBarMain";
-import Footer from "../../components/Footer";
-import { API_URL } from "../../config/api";
-import { fetchWithAuth } from "../../services/fetchWithAuth";
+import { AuthContext } from "../../auth/context/AuthContext";
+import NavBarMain from "../../../components/layout/NavBarMain";
+import Footer from "../../../components/layout/Footer";
+import { API_URL } from "../../../config/api";
+import { fetchWithAuth } from "../../../api/fetchWithAuth";
 import toast from "react-hot-toast";
 
-const DashboardManicura = () => {
+const DashboardUser = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -21,7 +21,6 @@ const DashboardManicura = () => {
     completed: "Completado",
     cancelled: "Cancelado",
   };
-
   // ============================
   // OBTENER TURNOS
   // ============================
@@ -307,4 +306,4 @@ const DashboardManicura = () => {
   );
 };
 
-export default DashboardManicura;
+export default DashboardUser;

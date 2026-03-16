@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import NavBarMain from "../../components/NavBarMain";
-import { API_URL } from "../../config/api";
-import { fetchWithAuth } from "../../services/fetchWithAuth";
+import NavBarMain from "../../../components/layout/NavBarMain";
+import { API_URL } from "../../../config/api";
+import { fetchWithAuth } from "../../../api/fetchWithAuth";
 
 export default function ServicesDashboard() {
   const navigate = useNavigate();
@@ -122,13 +122,13 @@ export default function ServicesDashboard() {
 
   //formatear precio
   const formatPrice = (price) => {
-    return Number(price).toLocaleString("es-AR",
-      { style: "currency",
-        currency: "ARS",
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      });
-  }
+    return Number(price).toLocaleString("es-AR", {
+      style: "currency",
+      currency: "ARS",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    });
+  };
 
   return (
     <>

@@ -1,10 +1,10 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
-import NavBarMain from "../../components/NavBarMain";
+import { AuthContext } from "../../auth/context/AuthContext";
+import NavBarMain from "../../../components/layout/NavBarMain";
 import toast from "react-hot-toast"; // ✅ Importamos toast
-import { API_URL } from "../../config/api";
-import { fetchWithAuth } from "../../services/fetchWithAuth";
+import { API_URL } from "../../../config/api";
+import { fetchWithAuth } from "../../../api/fetchWithAuth";
 
 export default function ServiceForm() {
   const { token } = useContext(AuthContext);
