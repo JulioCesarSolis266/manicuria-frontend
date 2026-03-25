@@ -113,8 +113,12 @@ export default function ClientsDashboard() {
       }
 
       toast.success("Cliente actualizado correctamente");
+
+      setClients((prev) =>
+        prev.map((c) => (c.id === id ? { ...c, ...form } : c)),
+      );
+
       setEditingId(null);
-      fetchClients();
     } catch (error) {
       console.error("Error actualizando cliente:", error);
       toast.error("Error inesperado al actualizar cliente");
