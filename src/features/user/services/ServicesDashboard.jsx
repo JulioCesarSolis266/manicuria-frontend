@@ -89,8 +89,10 @@ export default function ServicesDashboard() {
       }
 
       toast.success("Servicio actualizado correctamente");
+      setServices((prev) =>
+        prev.map((s) => (s.id === id ? { ...s, ...form } : s)),
+      );
       setEditingId(null);
-      fetchServices();
     } catch (error) {
       console.error(error);
       toast.error("Error inesperado al actualizar servicio");
