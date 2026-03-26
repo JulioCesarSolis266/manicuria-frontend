@@ -115,7 +115,7 @@ export default function ServicesDashboard() {
       }
 
       toast.success("Servicio eliminado correctamente");
-      fetchServices();
+      setServices((prev) => prev.filter((s) => s.id !== id));
     } catch (error) {
       console.error(error);
       toast.error("Error inesperado al eliminar servicio");

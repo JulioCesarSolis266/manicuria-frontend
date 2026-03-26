@@ -158,7 +158,7 @@ export default function ClientsDashboard() {
       }
 
       toast.success("Cliente eliminado correctamente");
-      fetchClients();
+      setClients((prev) => prev.filter((c) => c.id !== id));
     } catch (error) {
       console.error("Error eliminando cliente:", error);
       toast.error("Error inesperado al eliminar cliente");

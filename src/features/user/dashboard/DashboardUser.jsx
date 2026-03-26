@@ -88,7 +88,7 @@ const DashboardUser = () => {
       }
 
       toast.success("Turno eliminado correctamente");
-      fetchAppointments();
+      setAppointments((prev) => prev.filter((a) => a.id !== id));
     } catch (error) {
       console.error("Error eliminando turno:", error);
       toast.error("Error eliminando turno");
