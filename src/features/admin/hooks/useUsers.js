@@ -1,3 +1,5 @@
+// Logica relacionada a los usuarios, como obtenerlos, editarlos, desactivarlos, reactivarlos y eliminarlos. Tambien se maneja el estado de busqueda y filtro por estado (activo/inactivo)
+
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../../auth/context/AuthContext";
 import toast from "react-hot-toast";
