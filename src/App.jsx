@@ -6,7 +6,7 @@ import ProtectedRoute from "./components/routing/ProtectedRoute";
 // Páginas
 import DashboardUser from "./features/user/dashboard/DashboardUser";
 import Login from "./features/auth/Login";
-import Register from "./features/admin/Register";
+import Register from "./features/admin/page/Register";
 import DashboardAdmin from "./features/admin/page/DashboardAdmin";
 import AppointmentForm from "./features/user/appointments/AppointmentForm";
 import AppointmentEdit from "./features/user/appointments/AppointmentEdit";

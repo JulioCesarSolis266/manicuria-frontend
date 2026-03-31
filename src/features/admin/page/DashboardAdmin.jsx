@@ -1,8 +1,8 @@
 import NavBarMain from "../../../components/layout/NavBarMain";
 import { useUsers } from "../hooks/useUsers";
-import UsersTable from "../components/UsersTable";
-import UsersMobileList from "../components/UsersMobileList";
-import UserFilters from "../components/UserFilters";
+import UsersTable from "../components/dashboard/UsersTable";
+import UsersMobileList from "../components/dashboard/UsersMobileList";
+import UserFilters from "../components/dashboard/UserFilters";
 import { useNavigate } from "react-router-dom";
 
 const DashboardAdmin = () => {
