@@ -1,37 +1,8 @@
-import { useState, useContext } from "react";
-import { AuthContext } from "./context/AuthContext";
-import { API_URL } from "../../config/api";
+import LoginForm from "./components/LoginForm";
+import { useLogin } from "./hooks/useLogin";
 
 export default function Login() {
-  const { login } = useContext(AuthContext);
-  const [formData, setFormData] = useState({ username: "", password: "" });
-  const [error, setError] = useState(null);
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError(null);
-
-    try {
-      const res = await fetch(`${API_URL.AUTH}/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) throw new Error(data.message || "Error al iniciar sesión");
-
-      // Si todo sale bien, guardamos token y usuario en el contexto
-      login(data.token, data.user);
-    } catch (err) {
-      setError(err.message);
-    }
-  };
+  const { formData, error, loading, handleChange, handleSubmit } = useLogin();
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-100 px-6">
@@ -59,44 +30,13 @@ export default function Login() {
             Iniciar Sesión
           </h2>
 
-          <form onSubmit={handleSubmit}>
-            <label className="block mb-2 font-semibold text-slate-700">
-              Usuario
-            </label>
-            <input
-              type="text"
-              name="username"
-              onChange={handleChange}
-              value={formData.username}
-              className="w-full p-2 border border-slate-100 rounded-lg mb-4 focus:ring-2 focus:ring-blue-200 outline-none"
-              required
-            />
-
-            <label className="block mb-2 font-semibold text-slate-700">
-              Contraseña
-            </label>
-            <input
-              type="password"
-              name="password"
-              onChange={handleChange}
-              value={formData.password}
-              className="w-full p-2 border border-slate-100 rounded-lg mb-6 focus:ring-2 focus:ring-blue-200 outline-none"
-              required
-            />
-
-            {error && (
-              <p className="text-red-500 text-center mb-4 font-medium">
-                {error}
-              </p>
-            )}
-
-            <button
-              type="submit"
-              className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
-            >
-              Entrar
-            </button>
-          </form>
+          <LoginForm
+            formData={formData}
+            error={error}
+            loading={loading}
+            onChange={handleChange}
+            onSubmit={handleSubmit}
+          />
         </div>
       </div>
     </div>
