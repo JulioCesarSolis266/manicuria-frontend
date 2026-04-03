@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
-import { AuthContext } from "../../auth/context/AuthContext";
-import { API_URL } from "../../../config/api";
+import { AuthContext } from "../../../auth/context/AuthContext";
+import { API_URL } from "../../../../config/api";
 
 export const useServices = () => {
   const { token } = useContext(AuthContext);

@@ -10,10 +10,10 @@ import Register from "./features/admin/page/Register";
 import DashboardAdmin from "./features/admin/page/DashboardAdmin";
 import AppointmentForm from "./features/user/appointments/create/AppointmentForm";
 import AppointmentEdit from "./features/user/appointments/edit/AppointmentEdit";
-import ServicesDashboard from "./features/user/services/ServicesDashboard";
+import ServicesDashboard from "./features/user/services/pages/ServicesDashboard";
 import ClientsDashboard from "./features/user/clients/pages/ClientsDashboard";
 import ClientForm from "./features/user/clients/pages/ClientForm";
-import ServiceForm from "./features/user/services/ServiceForm";
+import ServiceForm from "./features/user/services/pages/ServiceForm";
 import { Toaster } from "react-hot-toast";
 
 const App = () => {

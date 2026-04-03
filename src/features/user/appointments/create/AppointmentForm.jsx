@@ -1,6 +1,6 @@
 import NavBarMain from "../../../../components/layout/NavBarMain";
 import { useClients } from "../../clients/hooks/useClients";
-import { useServices } from "../../services/useServices";
+import { useServices } from "../../services/hooks/useServices";
 import { useAppointmentCreate } from "./hooks/useAppointmentCreate";
 import AppointmentCreateForm from "./components/AppointmentCreateForm";
 
