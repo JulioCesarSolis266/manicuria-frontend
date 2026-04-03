@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import NavBarMain from "../../../../components/layout/NavBarMain";
 import Footer from "../../../../components/layout/Footer";
-import { useServices } from "../../services/useServices";
+import { useServices } from "../../services/hooks/useServices";
 import { useAppointmentEdit } from "./hooks/useAppointmentEdit";
 import AppointmentEditForm from "./components/AppointmentEditForm";
 

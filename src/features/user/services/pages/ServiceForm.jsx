@@ -204,11 +204,11 @@
 
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../auth/context/AuthContext";
-import NavBarMain from "../../../components/layout/NavBarMain";
+import { AuthContext } from "../../../auth/context/AuthContext";
+import NavBarMain from "../../../../components/layout/NavBarMain";
 
-import { useServiceForm } from "./hooks/useServiceForm";
-import ServiceFormUI from "./components/ServiceFormUI";
+import { useServiceForm } from "../hooks/useServiceForm";
+import ServiceFormUI from "../components/ServiceFormUI";
 
 export default function ServiceForm() {
   const { token } = useContext(AuthContext);
