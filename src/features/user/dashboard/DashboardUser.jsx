@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../auth/context/AuthContext";
 import NavBarMain from "../../../components/layout/NavBarMain";
@@ -9,10 +9,13 @@ import { useAppointmentsManager } from "./hooks/useAppointmentsManager";
 import AppointmentFilters from "./components/AppointmentFilters";
 import AppointmentListMobile from "./components/AppointmentListMobile";
 import AppointmentTable from "./components/AppointmentTable";
+import AppointmentCalendar from "./components/AppointmentCalendar"; // 👈 nuevo
 
 export default function DashboardUser() {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  const [view, setView] = useState("calendar"); // 👈 estado de vista
 
   const { appointments, setAppointments, loadingAppointments } =
     useAppointments();
@@ -44,25 +47,60 @@ export default function DashboardUser() {
           onCreate={() => navigate("/create-appointment")}
         />
 
+        {/* 🔹 Selector de vista */}
+        <div className="flex gap-2 mb-4">
+          <button
+            onClick={() => setView("calendar")}
+            className={`px-4 py-2 rounded transition-colors ${
+              view === "calendar"
+                ? "bg-green-600 text-white"
+                : "bg-gray-200 hover:bg-gray-300"
+            }`}
+          >
+            Calendario
+          </button>
+
+          <button
+            onClick={() => setView("list")}
+            className={`px-4 py-2 rounded transition-colors ${
+              view === "list"
+                ? "bg-green-600 text-white"
+                : "bg-gray-200 hover:bg-gray-300"
+            }`}
+          >
+            Lista
+          </button>
+        </div>
+
         {loadingAppointments && (
           <p className="text-center">Cargando turnos...</p>
         )}
 
         {!loadingAppointments && (
           <>
-            <AppointmentListMobile
-              appointments={filteredAppointments}
-              statusMap={statusMap}
-              onEdit={(id) => navigate(`/edit-appointment/${id}`)}
-              onDelete={handleDelete}
-            />
+            {/* 🔹 Vista Calendario */}
+            {view === "calendar" && (
+              <AppointmentCalendar appointments={filteredAppointments} />
+            )}
 
-            <AppointmentTable
-              appointments={filteredAppointments}
-              statusMap={statusMap}
-              onEdit={(id) => navigate(`/edit-appointment/${id}`)}
-              onDelete={handleDelete}
-            />
+            {/* 🔹 Vista Lista */}
+            {view === "list" && (
+              <>
+                <AppointmentListMobile
+                  appointments={filteredAppointments}
+                  statusMap={statusMap}
+                  onEdit={(id) => navigate(`/edit-appointment/${id}`)}
+                  onDelete={handleDelete}
+                />
+
+                <AppointmentTable
+                  appointments={filteredAppointments}
+                  statusMap={statusMap}
+                  onEdit={(id) => navigate(`/edit-appointment/${id}`)}
+                  onDelete={handleDelete}
+                />
+              </>
+            )}
           </>
         )}
       </div>
