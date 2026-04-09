@@ -1,3 +1,5 @@
+import { FaEdit, FaTrash, FaSave, FaRedo } from "react-icons/fa";
+
 export default function ClientRow({
   client,
   editingId,
@@ -52,19 +54,22 @@ export default function ClientRow({
           />
         </td>
 
-        <td className="p-2 border-b border-gray-300 text-center">
-          <button
-            onClick={() => handleSave(client.id)}
-            className="bg-blue-600 text-white px-3 py-1 rounded mr-2 hover:bg-blue-700"
-          >
-            Guardar
-          </button>
-          <button
-            onClick={() => setEditingId(null)}
-            className="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600"
-          >
-            Cancelar
-          </button>
+        <td className="p-2 border-b border-gray-300">
+          <div className="flex justify-center items-center gap-2 flex-nowrap">
+            <button
+              onClick={() => handleSave(client.id)}
+              className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 flex items-center justify-center"
+            >
+              <FaSave />
+            </button>
+
+            <button
+              onClick={() => setEditingId(null)}
+              className="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600 flex items-center justify-center"
+            >
+              <FaRedo />
+            </button>
+          </div>
         </td>
       </tr>
     );
@@ -79,19 +84,22 @@ export default function ClientRow({
         {client.notes || "Sin especificar"}
       </td>
 
-      <td className="p-2 border-b border-gray-300 text-center">
-        <button
-          onClick={() => handleEdit(client)}
-          className="bg-blue-600 text-white px-3 py-1 rounded mr-2 hover:bg-blue-700"
-        >
-          Editar
-        </button>
-        <button
-          onClick={() => handleDelete(client.id)}
-          className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
-        >
-          Eliminar
-        </button>
+      <td className="p-2 border-b border-gray-300">
+        <div className="flex justify-center items-center gap-2 flex-wrap">
+          <button
+            onClick={() => handleEdit(client)}
+            className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700"
+          >
+            <FaEdit />
+          </button>
+
+          <button
+            onClick={() => handleDelete(client.id)}
+            className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+          >
+            <FaTrash />
+          </button>
+        </div>
       </td>
     </tr>
   );

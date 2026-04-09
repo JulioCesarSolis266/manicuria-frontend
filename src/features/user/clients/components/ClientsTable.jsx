@@ -5,7 +5,7 @@ export default function ClientsTable(props) {
 
   return (
     <div className="hidden md:block overflow-x-auto">
-      <table className="w-full border-collapse min-w-[900px]">
+      <table className="w-full border-collapse min-w-[700px]">
         <thead className="bg-gray-100 text-left">
           <tr>
             <th className="p-2 border-b border-gray-300">Nombre</th>

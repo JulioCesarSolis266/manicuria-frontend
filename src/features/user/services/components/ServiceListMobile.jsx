@@ -10,22 +10,41 @@ export default function ServiceListMobile({
   onDelete,
   formatPrice,
 }) {
+  const fieldLabels = {
+    name: "Nombre",
+    price: "Precio",
+    durationMinutes: "Duración (minutos)",
+    category: "Categoría",
+    description: "Descripción",
+  };
+
+  const fields = [
+    "name",
+    "price",
+    "durationMinutes",
+    "category",
+    "description",
+  ];
+
   return (
     <div className="md:hidden space-y-3">
       {services.map((s) => (
         <div key={s.id} className="border rounded-lg p-4 bg-white shadow">
           {editingId === s.id ? (
             <>
-              {[
-                "name",
-                "price",
-                "durationMinutes",
-                "category",
-                "description",
-              ].map((field) => (
-                <div key={field}>
+              {fields.map((field) => (
+                <div key={field} className="flex flex-col gap-1">
+                  <label className="text-sm font-medium text-gray-700">
+                    {fieldLabels[field]}
+                  </label>
+
                   <input
-                    value={form[field]}
+                    type={
+                      field === "price" || field === "durationMinutes"
+                        ? "number"
+                        : "text"
+                    }
+                    value={form[field] || ""}
                     onChange={(e) =>
                       setForm({ ...form, [field]: e.target.value })
                     }
@@ -33,6 +52,7 @@ export default function ServiceListMobile({
                       errors[field] ? "border-red-500" : "border-gray-300"
                     }`}
                   />
+
                   {errors[field] && (
                     <p className="text-red-600 text-sm">{errors[field]}</p>
                   )}
@@ -56,10 +76,32 @@ export default function ServiceListMobile({
             </>
           ) : (
             <>
-              <p>
-                <b>{s.name}</b>
-              </p>
-              <p>{formatPrice(s.price)}</p>
+              <p className="text-base font-semibold">{s.name}</p>
+
+              <div className="mt-2 space-y-1">
+                <p className="text-sm font-medium text-gray-700">
+                  Precio:{" "}
+                  <span className="font-normal">{formatPrice(s.price)}</span>
+                </p>
+
+                <p className="text-sm font-medium text-gray-700">
+                  Duración:{" "}
+                  <span className="font-normal">{s.durationMinutes} min</span>
+                </p>
+
+                {s.category && (
+                  <p className="text-sm font-medium text-gray-700">
+                    Categoría: <span className="font-normal">{s.category}</span>
+                  </p>
+                )}
+
+                {s.description && (
+                  <p className="text-sm font-medium text-gray-700">
+                    Descripción:{" "}
+                    <span className="font-normal">{s.description}</span>
+                  </p>
+                )}
+              </div>
 
               <div className="flex gap-2 mt-3">
                 <button

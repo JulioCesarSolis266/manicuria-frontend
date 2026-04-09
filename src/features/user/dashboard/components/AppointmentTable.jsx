@@ -1,3 +1,7 @@
+//debo importar el icono de editar y eliminar para ponerlo en los botoner de acciones
+
+import { FaEdit, FaTrash } from "react-icons/fa";
+
 export default function AppointmentTable({
   appointments,
   statusMap,
@@ -59,7 +63,7 @@ export default function AppointmentTable({
                   className="bg-blue-600 text-white px-3 py-1 rounded
                   cursor-pointer hover:bg-blue-700 transition-colors"
                 >
-                  Editar
+                  <FaEdit />
                 </button>
 
                 <button
@@ -67,7 +71,7 @@ export default function AppointmentTable({
                   className="bg-red-600 text-white px-3 py-1 rounded
                   cursor-pointer hover:bg-red-700 transition-colors"
                 >
-                  Eliminar
+                  <FaTrash />
                 </button>
               </td>
             </tr>

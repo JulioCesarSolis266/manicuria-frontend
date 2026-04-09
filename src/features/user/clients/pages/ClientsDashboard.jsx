@@ -4,6 +4,7 @@ import { useClients } from "../hooks/useClients";
 import { useClientsManager } from "../hooks/useClientsManager";
 import ClientsHeader from "../components/ClientsHeader";
 import ClientsTable from "../components/ClientsTable";
+import ClientsListMobile from "../components/ClientsListMobile";
 
 export default function ClientsDashboard() {
   const navigate = useNavigate();
@@ -26,7 +27,10 @@ export default function ClientsDashboard() {
         {loadingClients && <p className="text-center">Cargando clientes...</p>}
 
         {!loadingClients && (
-          <ClientsTable clients={manager.filteredClients} {...manager} />
+          <>
+            <ClientsTable clients={manager.filteredClients} {...manager} />
+            <ClientsListMobile clients={manager.filteredClients} {...manager} />
+          </>
         )}
       </div>
     </>
