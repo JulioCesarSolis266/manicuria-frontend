@@ -33,7 +33,6 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
   };
 
-  // ⬅️ IMPORTANTE: mientras loading es true NO renderizamos App
   if (loading) return null;
 
   return (

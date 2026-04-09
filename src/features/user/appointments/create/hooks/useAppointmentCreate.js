@@ -4,12 +4,25 @@ import { fetchWithAuth } from "../../../../../api/fetchWithAuth";
 import { API_URL } from "../../../../../config/api";
 import toast from "react-hot-toast";
 
-export const useAppointmentCreate = () => {
+// 🔹 helper para datetime-local
+const formatDate = (date) => {
+  if (!date) return "";
+
+  const d = new Date(date);
+
+  // Ajuste para timezone local (clave)
+  const offset = d.getTimezoneOffset();
+  const localDate = new Date(d.getTime() - offset * 60000);
+
+  return localDate.toISOString().slice(0, 16);
+};
+
+export const useAppointmentCreate = (initialDate) => {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
     serviceId: "",
-    date: "",
+    date: formatDate(initialDate), // 👈 prefill correcto
     clientId: "",
     description: "",
   });
@@ -25,7 +38,7 @@ export const useAppointmentCreate = () => {
         method: "POST",
         body: JSON.stringify({
           serviceId: form.serviceId,
-          date: new Date(form.date).toISOString(),
+          date: new Date(form.date).toISOString(), // 👈 se guarda en UTC correctamente
           clientId: form.clientId,
           description: form.description,
         }),
@@ -46,6 +59,8 @@ export const useAppointmentCreate = () => {
       }
 
       toast.success("Turno creado correctamente");
+
+      // 🔹 opcional: volver al dashboard
       navigate("/dashboard-manicura");
     } catch (error) {
       toast.error(error.message || "Error de red al crear el turno");

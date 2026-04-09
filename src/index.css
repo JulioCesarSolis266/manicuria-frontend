@@ -1,1 +1,11 @@
 @import "tailwindcss";
+
+/* Oculta la fila de eventos de día completo */
+.rbc-allday-cell {
+  display: none;
+}
+
+/* Ajusta el header para que no deje espacio vacío */
+.rbc-time-header-content {
+  border-top: none;
+}

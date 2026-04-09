@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../auth/context/AuthContext";
 import NavBarMain from "../../../components/layout/NavBarMain";
@@ -9,13 +9,13 @@ import { useAppointmentsManager } from "./hooks/useAppointmentsManager";
 import AppointmentFilters from "./components/AppointmentFilters";
 import AppointmentListMobile from "./components/AppointmentListMobile";
 import AppointmentTable from "./components/AppointmentTable";
-import AppointmentCalendar from "./components/AppointmentCalendar"; // 👈 nuevo
+import AppointmentCalendar from "./components/AppointmentCalendar";
 
 export default function DashboardUser() {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const [view, setView] = useState("calendar"); // 👈 estado de vista
+  const [view, setView] = useState("calendar");
 
   const { appointments, setAppointments, loadingAppointments } =
     useAppointments();
@@ -29,6 +29,19 @@ export default function DashboardUser() {
     filteredAppointments,
     handleDelete,
   } = useAppointmentsManager(appointments, setAppointments);
+
+  // ✅ FIX: evitar calendario en mobile
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768 && view === "calendar") {
+        setView("list");
+      }
+    };
+
+    handleResize(); // al montar
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [view]);
 
   return (
     <>
@@ -47,8 +60,8 @@ export default function DashboardUser() {
           onCreate={() => navigate("/create-appointment")}
         />
 
-        {/* 🔹 Selector de vista */}
-        <div className="flex gap-2 mb-4">
+        {/* 🔹 Botones vista (solo desktop) */}
+        <div className="hidden md:flex gap-2 mb-4">
           <button
             onClick={() => setView("calendar")}
             className={`px-4 py-2 rounded transition-colors ${
@@ -78,27 +91,35 @@ export default function DashboardUser() {
 
         {!loadingAppointments && (
           <>
-            {/* 🔹 Vista Calendario */}
+            {/* 🔹 Calendario (solo desktop) */}
             {view === "calendar" && (
-              <AppointmentCalendar appointments={filteredAppointments} />
+              <div className="hidden md:block">
+                <AppointmentCalendar appointments={filteredAppointments} />
+              </div>
             )}
 
-            {/* 🔹 Vista Lista */}
+            {/* 🔹 Lista */}
             {view === "list" && (
               <>
-                <AppointmentListMobile
-                  appointments={filteredAppointments}
-                  statusMap={statusMap}
-                  onEdit={(id) => navigate(`/edit-appointment/${id}`)}
-                  onDelete={handleDelete}
-                />
+                {/* Mobile */}
+                <div className="md:hidden">
+                  <AppointmentListMobile
+                    appointments={filteredAppointments}
+                    statusMap={statusMap}
+                    onEdit={(id) => navigate(`/edit-appointment/${id}`)}
+                    onDelete={handleDelete}
+                  />
+                </div>
 
-                <AppointmentTable
-                  appointments={filteredAppointments}
-                  statusMap={statusMap}
-                  onEdit={(id) => navigate(`/edit-appointment/${id}`)}
-                  onDelete={handleDelete}
-                />
+                {/* Desktop */}
+                <div className="hidden md:block">
+                  <AppointmentTable
+                    appointments={filteredAppointments}
+                    statusMap={statusMap}
+                    onEdit={(id) => navigate(`/edit-appointment/${id}`)}
+                    onDelete={handleDelete}
+                  />
+                </div>
               </>
             )}
           </>
