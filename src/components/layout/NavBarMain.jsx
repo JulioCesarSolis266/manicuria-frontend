@@ -103,6 +103,14 @@ export default function NavBarMain() {
                 Clientes
               </Link>
 
+              <Link
+                onClick={() => setOpen(false)}
+                to="/settings"
+                className="text-gray-300 hover:text-white transition"
+              >
+                Configuración
+              </Link>
+
               {/* Logout para manicura (estilo neutro) */}
               <button
                 onClick={() => {

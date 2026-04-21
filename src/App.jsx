@@ -14,6 +14,7 @@ import ServicesDashboard from "./features/user/services/pages/ServicesDashboard"
 import ClientsDashboard from "./features/user/clients/pages/ClientsDashboard";
 import ClientForm from "./features/user/clients/pages/ClientForm";
 import ServiceForm from "./features/user/services/pages/ServiceForm";
+import SettingsPage from "./features/user/settings/pages/SettingsPage";
 import { Toaster } from "react-hot-toast";
 
 const App = () => {
@@ -111,6 +112,8 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+
+        <Route path="/settings" element={<SettingsPage />} />
 
         {/* ===================== */}
         {/* ADMIN */}
